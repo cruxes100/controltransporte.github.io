@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Control de Transporte - CERUTI</title>
     <style>
+        /* Estilos Generales */
         * {
             margin: 0;
             padding: 0;
@@ -403,16 +404,6 @@
                         <textarea id="comentarios" rows="4" placeholder="Observaciones, incidencias, sugerencias..."></textarea>
                     </div>
                 </div>
-                <!-- Nuevo campo de subida de archivo -->
-                <div class="section">
-                    <h2 class="section-title">
-                        <div class="icon">📄</div> Adjuntar Documento
-                    </h2>
-                    <div class="form-group">
-                        <label for="documento">Adjuntar Guía de Remisión, Factura, etc.</label>
-                        <input type="file" id="documento" accept=".pdf, .jpg, .jpeg, .png">
-                    </div>
-                </div>
                 <!-- Botones de Acción -->
                 <div style="text-align: center; margin: 40px 0;">
                     <button class="btn btn-success" onclick="guardarRegistro()">💾 Guardar Registro</button>
@@ -439,13 +430,16 @@
 
     <script>
         // ¡IMPORTANTE!: Reemplaza 'URL_DEL_SCRIPT_DE_APPS_SCRIPT' con la URL real de tu web app.
-        const URL_WEB_APP = 'https://script.google.com/macros/s/AKfycbxGWTmHKigbFmTYDaIIBUsKnw7HmGt_TvnoOLEvTdJEw7T2ssdK_jBoVK0YmTFgMrPk7Q/exec';
-        
+        // La URL de tu script, basada en tu código HTML.
+        const URL_WEB_APP = 'https://script.google.com/macros/s/AKfycbyvFjAOpaweFy7RySEBTFWgSHsUnpKnZVaY65OxQxW61XA9Hr7XOj0Mi_ovDrwZK6v2Dw/exec';
+
+        // Update date and time display
         document.addEventListener('DOMContentLoaded', function() {
             actualizarFechaHora();
             setInterval(actualizarFechaHora, 1000);
         });
 
+        // Actualizar fecha y hora
         function actualizarFechaHora() {
             const now = new Date();
             const options = {
@@ -460,13 +454,16 @@
             document.getElementById('currentDateTime').textContent = now.toLocaleDateString('es-PE', options);
         }
 
+        // Registrar tiempo actual
         function registrarTiempo(campo) {
             const now = new Date();
             const tiempo = now.toTimeString().slice(0, 5);
             document.getElementById(campo).value = tiempo;
         }
 
+        // Función para guardar registro en Google Sheets
         async function guardarRegistro() {
+            // Validar campos requeridos
             const camposRequeridos = {
                 'placa': 'Número de Placa',
                 'empresa': 'Empresa de Transporte',
@@ -510,25 +507,23 @@
                     ActitudPersonal: document.getElementById('actitudPersonal').value,
                     Comentarios: document.getElementById('comentarios').value || 'Sin comentarios'
                 };
-                
-                const fileInput = document.getElementById('documento');
-                const file = fileInput.files[0];
-
-                const formData = new FormData();
-                formData.append('data', JSON.stringify(registro));
-                if (file) {
-                    formData.append('documento', file);
-                }
 
                 const response = await fetch(URL_WEB_APP, {
                     method: 'POST',
-                    body: formData
+                    headers: {
+                      'Content-Type': 'text/plain;charset=utf-8',
+                    },
+                    body: JSON.stringify(registro),
                 });
                 
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
                 const result = await response.json();
-                
-                if (result.status === 'success') {
-                    mostrarModal('✅ Registro Guardado', result.message);
+
+                if (result.status === "success") {
+                    mostrarModal('✅ Registro Guardado', 'El registro se ha guardado correctamente en tu hoja de cálculo.');
                 } else {
                     mostrarModal('Error', `Ocurrió un error: ${result.message}`);
                 }
@@ -544,14 +539,11 @@
 
         function limpiarFormulario() {
             document.querySelectorAll('input, select, textarea').forEach(element => {
-                if (element.type === 'file') {
-                    element.value = '';
-                } else {
-                    element.value = '';
-                }
+                element.value = '';
             });
         }
         
+        // Show/hide loading overlay
         function showLoading(show) {
             document.getElementById('loadingOverlay').style.display = show ? 'flex' : 'none';
         }
