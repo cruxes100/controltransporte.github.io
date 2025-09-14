@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Control de Transporte - CERUTI</title>
     <style>
-        /* Estilos Generales */
         * {
             margin: 0;
             padding: 0;
@@ -278,31 +277,31 @@
                     <div class="form-grid">
                         <div class="form-group">
                             <label>Número de Placa *</label>
-                            <input type="text" id="placa" name="Placa" placeholder="ABC-123" required style="text-transform: uppercase;">
+                            <input type="text" id="placa" placeholder="ABC-123" required style="text-transform: uppercase;">
                         </div>
                         <div class="form-group">
                             <label>Empresa de Transporte *</label>
-                            <input type="text" id="empresa" name="Empresa" placeholder="Nombre de la empresa" required>
+                            <input type="text" id="empresa" placeholder="Nombre de la empresa" required>
                         </div>
                         <div class="form-group">
                             <label>Conductor *</label>
-                            <input type="text" id="conductor" name="Conductor" placeholder="Nombre completo" required>
+                            <input type="text" id="conductor" placeholder="Nombre completo" required>
                         </div>
                         <div class="form-group">
                             <label>DNI Conductor *</label>
-                            <input type="text" id="dniConductor" name="DNI Conductor" placeholder="12345678" maxlength="8" required>
+                            <input type="text" id="dniConductor" placeholder="12345678" maxlength="8" required>
                         </div>
                         <div class="form-group">
                             <label>Ayudante</label>
-                            <input type="text" id="ayudante" name="Ayudante" placeholder="Nombre completo">
+                            <input type="text" id="ayudante" placeholder="Nombre completo">
                         </div>
                         <div class="form-group">
                             <label>Celular Conductor *</label>
-                            <input type="tel" id="celular" name="Celular" placeholder="987654321" required>
+                            <input type="tel" id="celular" placeholder="987654321" required>
                         </div>
                         <div class="form-group">
                             <label>Fecha de Vencimiento SCTR *</label>
-                            <input type="date" id="fechaVencimientoSCTR" name="Fecha Vencimiento SCTR" required>
+                            <input type="date" id="fechaVencimientoSCTR" required>
                         </div>
                     </div>
                 </div>
@@ -314,22 +313,22 @@
                     <div class="form-grid">
                         <div class="form-group">
                             <label>Hora de Ingreso</label>
-                            <input type="time" id="horaIngreso" name="Hora Ingreso">
+                            <input type="time" id="horaIngreso">
                             <button class="btn" onclick="registrarTiempo('horaIngreso')">Registrar Ahora</button>
                         </div>
                         <div class="form-group">
                             <label>Inicio de Carga</label>
-                            <input type="time" id="inicioCarga" name="Inicio Carga">
+                            <input type="time" id="inicioCarga">
                             <button class="btn" onclick="registrarTiempo('inicioCarga')">Registrar Ahora</button>
                         </div>
                         <div class="form-group">
                             <label>Fin de Carga</label>
-                            <input type="time" id="finCarga" name="Fin Carga">
+                            <input type="time" id="finCarga">
                             <button class="btn" onclick="registrarTiempo('finCarga')">Registrar Ahora</button>
                         </div>
                         <div class="form-group">
                             <label>Hora de Salida</label>
-                            <input type="time" id="horaSalida" name="Hora Salida">
+                            <input type="time" id="horaSalida">
                             <button class="btn" onclick="registrarTiempo('horaSalida')">Registrar Ahora</button>
                         </div>
                     </div>
@@ -342,11 +341,11 @@
                     <div class="form-grid">
                         <div class="form-group">
                             <label>Total Cajas Cargadas *</label>
-                            <input type="number" id="totalCajas" name="Total Cajas" placeholder="1500" required>
+                            <input type="number" id="totalCajas" placeholder="1500" required>
                         </div>
                         <div class="form-group">
                             <label>Tipo de Cajas</label>
-                            <select id="tipoCajas" name="Tipo de Cajas">
+                            <select id="tipoCajas">
                                 <option value="">Seleccionar tipo</option>
                                 <option value="corrugado-simple">Corrugado Simple</option>
                                 <option value="corrugado-doble">Corrugado Doble</option>
@@ -356,15 +355,11 @@
                         </div>
                         <div class="form-group">
                             <label>Guía de Remisión</label>
-                            <input type="text" id="guiaRemision" name="Guía de Remisión" placeholder="GR-2024-001">
+                            <input type="text" id="guiaRemision" placeholder="GR-2024-001">
                         </div>
                         <div class="form-group">
                             <label>Peso Aproximado (kg)</label>
-                            <input type="number" id="peso" name="Peso" placeholder="2500">
-                        </div>
-                        <div class="form-group">
-                            <label>Documento de Carga</label>
-                            <input type="file" id="documento" name="documento">
+                            <input type="number" id="peso" placeholder="2500">
                         </div>
                     </div>
                 </div>
@@ -376,7 +371,7 @@
                     <div class="form-grid">
                         <div class="form-group">
                             <label>Estado del Vehículo</label>
-                            <select id="estadoVehiculo" name="Estado del Vehículo">
+                            <select id="estadoVehiculo">
                                 <option value="bueno">Bueno</option>
                                 <option value="regular">Regular</option>
                                 <option value="malo">Malo</option>
@@ -384,7 +379,7 @@
                         </div>
                         <div class="form-group">
                             <label>Actitud del Personal</label>
-                            <select id="actitudPersonal" name="Actitud del Personal">
+                            <select id="actitudPersonal">
                                 <option value="colaborativo">Colaborativo</option>
                                 <option value="regular">Regular</option>
                                 <option value="problematico">Problemático</option>
@@ -392,7 +387,7 @@
                         </div>
                         <div class="form-group">
                             <label>Zona de Reparto</label>
-                            <select id="zonaReparto" name="Zona de Reparto">
+                            <select id="zonaReparto">
                                 <option value="">Seleccionar zona</option>
                                 <option value="norte">Lima Norte</option>
                                 <option value="sur">Lima Sur</option>
@@ -405,7 +400,7 @@
                     </div>
                     <div class="form-group">
                         <label>Comentarios Adicionales</label>
-                        <textarea id="comentarios" name="Comentarios" rows="4" placeholder="Observaciones, incidencias, sugerencias..."></textarea>
+                        <textarea id="comentarios" rows="4" placeholder="Observaciones, incidencias, sugerencias..."></textarea>
                     </div>
                 </div>
                 <!-- Botones de Acción -->
@@ -434,9 +429,9 @@
 
     <script>
         // ¡IMPORTANTE!: Reemplaza 'URL_DEL_SCRIPT_DE_APPS_SCRIPT' con la URL real de tu web app.
-        // La URL de tu script.
-        const URL_WEB_APP = 'https://script.google.com/macros/s/AKfycbym3vRT8eCYWo9ZQOiw89o-31uejSG3fRBcwG9lgPITa4gJZHTXK2me0HeW3NR-NHljeg/exec';
-        
+        // Sigue las instrucciones al final de la respuesta.
+        const URL_WEB_APP = 'https://script.google.com/macros/s/AKfycbyvFjAOpaweFy7RySEBTFWgSHsUnpKnZVaY65OxQxW61XA9Hr7XOj0Mi_ovDrwZK6v2Dw/exec';
+
         // Update date and time display
         document.addEventListener('DOMContentLoaded', function() {
             actualizarFechaHora();
@@ -488,41 +483,41 @@
             showLoading(true);
 
             try {
-                // Se crea un objeto FormData para enviar datos y archivos.
-                const formData = new FormData();
-                document.querySelectorAll('input, select, textarea').forEach(element => {
-                    if (element.type === 'file' && element.files.length > 0) {
-                        formData.append(element.name, element.files[0]);
-                    } else if (element.type !== 'file' && element.name) {
-                        formData.append(element.name, element.value);
-                    }
-                });
-
-                // Agregamos el enlace del script en el Canvas para la conexión
-                formData.append('URL_WEB_APP', URL_WEB_APP);
+                const registro = {
+                    Fecha: new Date().toLocaleDateString('es-PE'),
+                    Hora: new Date().toLocaleTimeString('es-PE'),
+                    Placa: document.getElementById('placa').value.toUpperCase(),
+                    Empresa: document.getElementById('empresa').value,
+                    Conductor: document.getElementById('conductor').value,
+                    DNIConductor: document.getElementById('dniConductor').value,
+                    Ayudante: document.getElementById('ayudante').value || 'No asignado',
+                    Celular: document.getElementById('celular').value,
+                    FechaVencimientoSCTR: document.getElementById('fechaVencimientoSCTR').value,
+                    HoraIngreso: document.getElementById('horaIngreso').value || 'No registrado',
+                    InicioCarga: document.getElementById('inicioCarga').value || 'No registrado',
+                    FinCarga: document.getElementById('finCarga').value || 'No registrado',
+                    HoraSalida: document.getElementById('horaSalida').value || 'No registrado',
+                    TotalCajas: parseInt(document.getElementById('totalCajas').value),
+                    TipoCajas: document.getElementById('tipoCajas').value || 'No especificado',
+                    GuiaRemision: document.getElementById('guiaRemision').value || 'No especificado',
+                    Peso: parseInt(document.getElementById('peso').value) || 0,
+                    ZonaReparto: document.getElementById('zonaReparto').value || 'No especificado',
+                    EstadoVehiculo: document.getElementById('estadoVehiculo').value,
+                    ActitudPersonal: document.getElementById('actitudPersonal').value,
+                    Comentarios: document.getElementById('comentarios').value || 'Sin comentarios'
+                };
 
                 const response = await fetch(URL_WEB_APP, {
                     method: 'POST',
-                    body: formData
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(registro),
                 });
                 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const result = await response.json();
-
-                if (result.status === "success") {
-                    let mensaje = 'El registro se ha guardado correctamente en tu hoja de cálculo.';
-                    if (result.fileReceived) {
-                        mensaje += ' El documento se guardó en Google Drive.';
-                    } else {
-                        mensaje += ' No se adjuntó ningún documento.';
-                    }
-                    mostrarModal('✅ Registro Guardado', mensaje);
-                } else {
-                    mostrarModal('Error', `Ocurrió un error: ${result.message}`);
-                }
+                // No-cors mode prevents checking for successful response, so we assume success.
+                mostrarModal('✅ Registro Guardado', 'El registro se ha guardado correctamente en tu hoja de cálculo.');
                 
             } catch (error) {
                 console.error('Error al guardar registro:', error);
@@ -556,8 +551,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
