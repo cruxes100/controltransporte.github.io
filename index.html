@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Control de Transporte - CERUTI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .info-panel {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            border-left: 5px solid #3498db;
+            text-align: center;
+        }
+
+        .info-panel a {
+            color: #3498db;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        .section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #3498db;
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            background: #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px 16px;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .time-display {
+            background: #27ae60;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+        .modal-content h3 {
+            margin-bottom: 15px;
+        }
+        .modal-content p {
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            flex-direction: column;
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #3498db;
+            animation: spin 1s ease infinite;
+            margin-bottom: 15px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>SISTEMA DE CONTROL DE TRANSPORTE</h1>
+            <p>CERUTI - Fábrica de Envases de Cartón</p>
+            <div class="time-display" id="currentDateTime"></div>
+        </div>
+        
+        <div class="info-panel">
+            <p>
+                Este sistema guarda los registros directamente en tu hoja de cálculo de Google. <br>
+                Puedes ver todos los datos en tu hoja:
+                <a href="https://docs.google.com/spreadsheets/d/1a5Y5XaQiD3JlzQhO9ogPT04B_Ouzoxa8cM7kRr9aFJ0/edit?usp=sharing" target="_blank">
+                    Ver Hoja de Cálculo
+                </a>
+            </p>
+        </div>
+
+        <div style="padding: 40px;">
+            <!-- PESTAÑA: NUEVO REGISTRO -->
+            <div id="tab-nuevo">
+                <!-- Datos del Transporte -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <div class="icon">🚚</div> Datos del Transporte
+                    </h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Número de Placa *</label>
+                            <input type="text" id="placa" placeholder="ABC-123" required style="text-transform: uppercase;">
+                        </div>
+                        <div class="form-group">
+                            <label>Empresa de Transporte *</label>
+                            <input type="text" id="empresa" placeholder="Nombre de la empresa" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Conductor *</label>
+                            <input type="text" id="conductor" placeholder="Nombre completo" required>
+                        </div>
+                        <div class="form-group">
+                            <label>DNI Conductor *</label>
+                            <input type="text" id="dniConductor" placeholder="12345678" maxlength="8" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Ayudante</label>
+                            <input type="text" id="ayudante" placeholder="Nombre completo">
+                        </div>
+                        <div class="form-group">
+                            <label>Celular Conductor *</label>
+                            <input type="tel" id="celular" placeholder="987654321" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha de Vencimiento SCTR *</label>
+                            <input type="date" id="fechaVencimientoSCTR" required>
+                        </div>
+                    </div>
+                </div>
+                <!-- Control de Tiempos -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <div class="icon">⏱️</div> Control de Tiempos
+                    </h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Hora de Ingreso</label>
+                            <input type="time" id="horaIngreso">
+                            <button class="btn" onclick="registrarTiempo('horaIngreso')">Registrar Ahora</button>
+                        </div>
+                        <div class="form-group">
+                            <label>Inicio de Carga</label>
+                            <input type="time" id="inicioCarga">
+                            <button class="btn" onclick="registrarTiempo('inicioCarga')">Registrar Ahora</button>
+                        </div>
+                        <div class="form-group">
+                            <label>Fin de Carga</label>
+                            <input type="time" id="finCarga">
+                            <button class="btn" onclick="registrarTiempo('finCarga')">Registrar Ahora</button>
+                        </div>
+                        <div class="form-group">
+                            <label>Hora de Salida</label>
+                            <input type="time" id="horaSalida">
+                            <button class="btn" onclick="registrarTiempo('horaSalida')">Registrar Ahora</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Información de Carga -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <div class="icon">📦</div> Información de Carga
+                    </h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Total Cajas Cargadas *</label>
+                            <input type="number" id="totalCajas" placeholder="1500" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo de Cajas</label>
+                            <select id="tipoCajas">
+                                <option value="">Seleccionar tipo</option>
+                                <option value="corrugado-simple">Corrugado Simple</option>
+                                <option value="corrugado-doble">Corrugado Doble</option>
+                                <option value="microcanal">Microcanal</option>
+                                <option value="otros">Otros</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Guía de Remisión</label>
+                            <input type="text" id="guiaRemision" placeholder="GR-2024-001">
+                        </div>
+                        <div class="form-group">
+                            <label>Peso Aproximado (kg)</label>
+                            <input type="number" id="peso" placeholder="2500">
+                        </div>
+                    </div>
+                </div>
+                <!-- Observaciones -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <div class="icon">📝</div> Observaciones y Evaluación
+                    </h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Estado del Vehículo</label>
+                            <select id="estadoVehiculo">
+                                <option value="bueno">Bueno</option>
+                                <option value="regular">Regular</option>
+                                <option value="malo">Malo</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Actitud del Personal</label>
+                            <select id="actitudPersonal">
+                                <option value="colaborativo">Colaborativo</option>
+                                <option value="regular">Regular</option>
+                                <option value="problematico">Problemático</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Zona de Reparto</label>
+                            <select id="zonaReparto">
+                                <option value="">Seleccionar zona</option>
+                                <option value="norte">Lima Norte</option>
+                                <option value="sur">Lima Sur</option>
+                                <option value="este">Lima Este</option>
+                                <option value="oeste">Lima Oeste</option>
+                                <option value="centro">Lima Centro</option>
+                                <option value="callao">Callao</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Comentarios Adicionales</label>
+                        <textarea id="comentarios" rows="4" placeholder="Observaciones, incidencias, sugerencias..."></textarea>
+                    </div>
+                </div>
+                <!-- Nuevo campo de subida de archivo -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <div class="icon">📄</div> Adjuntar Documento
+                    </h2>
+                    <div class="form-group">
+                        <label for="documento">Adjuntar Guía de Remisión, Factura, etc.</label>
+                        <input type="file" id="documento" accept=".pdf, .jpg, .jpeg, .png">
+                    </div>
+                </div>
+                <!-- Botones de Acción -->
+                <div style="text-align: center; margin: 40px 0;">
+                    <button class="btn btn-success" onclick="guardarRegistro()">💾 Guardar Registro</button>
+                    <button class="btn btn-secondary" onclick="limpiarFormulario()">🔄 Limpiar Formulario</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Mensajes -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h3 id="modalTitle"></h3>
+            <p id="modalMessage"></p>
+            <button class="btn" onclick="cerrarModal()">Aceptar</button>
+        </div>
+    </div>
+
+    <!-- Loading overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+        <span>Guardando en Google Sheets...</span>
+    </div>
+
+    <script>
+        // ¡IMPORTANTE!: Reemplaza 'URL_DEL_SCRIPT_DE_APPS_SCRIPT' con la URL real de tu web app.
+        const URL_WEB_APP = 'https://script.google.com/macros/s/AKfycbxGWTmHKigbFmTYDaIIBUsKnw7HmGt_TvnoOLEvTdJEw7T2ssdK_jBoVK0YmTFgMrPk7Q/exec';
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            actualizarFechaHora();
+            setInterval(actualizarFechaHora, 1000);
+        });
+
+        function actualizarFechaHora() {
+            const now = new Date();
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            document.getElementById('currentDateTime').textContent = now.toLocaleDateString('es-PE', options);
+        }
+
+        function registrarTiempo(campo) {
+            const now = new Date();
+            const tiempo = now.toTimeString().slice(0, 5);
+            document.getElementById(campo).value = tiempo;
+        }
+
+        async function guardarRegistro() {
+            const camposRequeridos = {
+                'placa': 'Número de Placa',
+                'empresa': 'Empresa de Transporte',
+                'conductor': 'Conductor',
+                'dniConductor': 'DNI del Conductor',
+                'celular': 'Celular del Conductor',
+                'totalCajas': 'Total de Cajas',
+                'fechaVencimientoSCTR': 'Fecha de Vencimiento SCTR'
+            };
+            for (let campo in camposRequeridos) {
+                if (!document.getElementById(campo).value) {
+                    mostrarModal('Campo Requerido', `El campo "${camposRequeridos[campo]}" es requerido`);
+                    document.getElementById(campo).focus();
+                    return;
+                }
+            }
+            
+            showLoading(true);
+
+            try {
+                const registro = {
+                    Fecha: new Date().toLocaleDateString('es-PE'),
+                    Hora: new Date().toLocaleTimeString('es-PE'),
+                    Placa: document.getElementById('placa').value.toUpperCase(),
+                    Empresa: document.getElementById('empresa').value,
+                    Conductor: document.getElementById('conductor').value,
+                    DNIConductor: document.getElementById('dniConductor').value,
+                    Ayudante: document.getElementById('ayudante').value || 'No asignado',
+                    Celular: document.getElementById('celular').value,
+                    FechaVencimientoSCTR: document.getElementById('fechaVencimientoSCTR').value,
+                    HoraIngreso: document.getElementById('horaIngreso').value || 'No registrado',
+                    InicioCarga: document.getElementById('inicioCarga').value || 'No registrado',
+                    FinCarga: document.getElementById('finCarga').value || 'No registrado',
+                    HoraSalida: document.getElementById('horaSalida').value || 'No registrado',
+                    TotalCajas: parseInt(document.getElementById('totalCajas').value),
+                    TipoCajas: document.getElementById('tipoCajas').value || 'No especificado',
+                    GuiaRemision: document.getElementById('guiaRemision').value || 'No especificado',
+                    Peso: parseInt(document.getElementById('peso').value) || 0,
+                    ZonaReparto: document.getElementById('zonaReparto').value || 'No especificado',
+                    EstadoVehiculo: document.getElementById('estadoVehiculo').value,
+                    ActitudPersonal: document.getElementById('actitudPersonal').value,
+                    Comentarios: document.getElementById('comentarios').value || 'Sin comentarios'
+                };
+                
+                const fileInput = document.getElementById('documento');
+                const file = fileInput.files[0];
+
+                const formData = new FormData();
+                formData.append('data', JSON.stringify(registro));
+                if (file) {
+                    formData.append('documento', file);
+                }
+
+                const response = await fetch(URL_WEB_APP, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    mostrarModal('✅ Registro Guardado', result.message);
+                } else {
+                    mostrarModal('Error', `Ocurrió un error: ${result.message}`);
+                }
+                
+            } catch (error) {
+                console.error('Error al guardar registro:', error);
+                mostrarModal('Error', 'Ocurrió un error al guardar el registro. Asegúrate de que la URL del script sea correcta.');
+            } finally {
+                showLoading(false);
+                limpiarFormulario();
+            }
+        }
+
+        function limpiarFormulario() {
+            document.querySelectorAll('input, select, textarea').forEach(element => {
+                if (element.type === 'file') {
+                    element.value = '';
+                } else {
+                    element.value = '';
+                }
+            });
+        }
+        
+        function showLoading(show) {
+            document.getElementById('loadingOverlay').style.display = show ? 'flex' : 'none';
+        }
+
+        function mostrarModal(titulo, mensaje) {
+            document.getElementById('modalTitle').textContent = titulo;
+            document.getElementById('modalMessage').textContent = mensaje;
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function cerrarModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
